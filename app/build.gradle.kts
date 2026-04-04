@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -12,7 +11,6 @@ plugins {
     alias(libs.plugins.google.gms)
     alias(libs.plugins.google.hilt)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
@@ -20,9 +18,7 @@ plugins {
 
 android {
     namespace = "com.illusion.checkfirm"
-    compileSdk {
-        release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.illusion.checkfirm"
@@ -71,16 +67,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-
     buildFeatures {
         compose = true
         buildConfig = true
-        viewBinding = true
     }
 
     packaging {
@@ -91,15 +80,19 @@ android {
             )
         }
     }
+}
 
-    room {
-        schemaDirectory("$projectDir/schemas")
-        generateKotlin = true
-    }
+kotlin {
+    jvmToolchain(jdkVersion = 21)
+}
 
-    hilt {
-        enableAggregatingTask = true
-    }
+room {
+    schemaDirectory("$projectDir/schemas")
+    generateKotlin = true
+}
+
+hilt {
+    enableAggregatingTask = true
 }
 
 dependencies {
