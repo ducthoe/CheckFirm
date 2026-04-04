@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -11,7 +10,6 @@ plugins {
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.google.gms)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -69,20 +67,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-        }
-    }
-
     buildFeatures {
         viewBinding = true
         buildConfig = true
-    }
-
-    room {
-        schemaDirectory("$projectDir/schemas")
-        generateKotlin = true
     }
 
     packaging {
@@ -93,6 +80,14 @@ android {
             )
         }
     }
+}
+
+kotlin {
+    jvmToolchain(jdkVersion = 21)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
